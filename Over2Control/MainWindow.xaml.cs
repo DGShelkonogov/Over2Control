@@ -10,6 +10,7 @@ namespace Over2Control
     {
         public static string PathToAppsettings = "appsettings.json";
 
+
         public MainWindow()
         {
             InitializeComponent();
