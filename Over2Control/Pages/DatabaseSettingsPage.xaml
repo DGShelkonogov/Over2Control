@@ -1,0 +1,161 @@
+﻿<Page x:Class="Over2Control.Pages.DatabaseSettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Over2Control.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Background="White"
+      Title="DatabaseSettingsPage">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                
+                <TextBlock
+					TextAlignment="Left"
+					Margin="5,10,0,5"
+					FontSize="12"
+					Text="Сервер"/>
+
+                <ComboBox
+					x:Name="cmbServerType"
+					Margin="5,30,5,0"
+					SelectedIndex="0"
+                    SelectionChanged="CmbServerTypeSelectionChanged"
+					HorizontalAlignment="Stretch"/>
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <TextBlock
+					TextAlignment="Left"
+					Margin="5,10,5,0"
+					FontSize="12"
+					Text="Адрес"/>
+
+                <TextBox
+                    x:Name="txtAddress"
+					Margin="5,30,5,0"
+					HorizontalAlignment="Stretch"/>
+            </Grid>
+
+            <Grid Grid.Column="2">
+                <TextBlock
+					TextAlignment="Left"
+					Margin="5,10,5,0"
+					FontSize="12"
+					Text="Порт"/>
+
+                <TextBox
+                    x:Name="txtPort"
+					Margin="5,30,5,0"
+					HorizontalAlignment="Stretch"/>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <TextBlock
+				TextAlignment="Left"
+				Margin="5,10,5,0"
+				FontSize="12"
+				Text="База данных"/>
+
+            <Grid Margin="5,30,5,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="80"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox
+                    x:Name="txtPath"
+					HorizontalAlignment="Stretch"/>
+
+                <Button 
+                    Grid.Column="1" 
+                    Content="Открыть" 
+                    Click="ButtonClickOpenFile"/>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+
+            <Grid Grid.Column="0">
+                <TextBlock
+					TextAlignment="Left"
+					Margin="5,10,5,0"
+					FontSize="12"
+					Text="Пользователь"/>
+
+                <TextBox
+                    x:Name="txtUsername"
+					Margin="5,30,5,0"
+					HorizontalAlignment="Stretch"/>
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <TextBlock
+					TextAlignment="Left"
+					Margin="5,10,5,0"
+					FontSize="12"
+					Text="Пароль"/>
+
+                <PasswordBox
+                    x:Name="txtPassword"
+					Margin="5,30,5,0"
+					HorizontalAlignment="Stretch"/>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="3">
+            <ScrollViewer VerticalScrollBarVisibility="Visible">
+                <TextBlock
+                    x:Name="txtMessageLog"
+					TextAlignment="Left"
+					Margin="5,10,5,0"
+					TextWrapping="Wrap"
+					FontSize="14"
+					/>
+            </ScrollViewer>
+
+        </Grid>
+
+        <Grid Grid.Row="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button 
+                Grid.Column="0" 
+                Click="ButtonClickCheckConnection"
+                HorizontalAlignment="Stretch" 
+                Margin="5,0,5,0" 
+                Content="Проверить подключение"/>
+            <Button 
+                Grid.Column="1"
+                Click="ButtonClickAccept"
+                HorizontalAlignment="Stretch" 
+                Margin="5,0,5,0" 
+                Content="Принять"/>
+        </Grid>
+    </Grid>
+</Page>

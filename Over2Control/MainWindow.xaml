@@ -1,0 +1,49 @@
+﻿<Window x:Class="Over2Control.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Over2Control"
+        mc:Ignorable="d"
+        Title="Over_APB" Height="450" Width="800">
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        
+        <TabControl>
+            <TabItem Header="База данных">
+                <Frame Source="Pages/DatabaseSettingsPage.xaml"/>
+            </TabItem>
+            <TabItem Header="Служба Over 2">
+                <Frame Source="Pages/Over2ControlPage.xaml"/>
+            </TabItem>
+            <TabItem Header="Конфигуратор службы Over 2">
+                <Frame Source="Pages/Over2SuperControlPage.xaml"/>
+            </TabItem>
+        </TabControl>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Ellipse
+                x:Name="ellipseDatabaseStatus"
+                Width="20"
+                Height="20"
+                Fill="Red"/>
+
+            <TextBlock 
+                x:Name="txtDatabaseStatus"
+                Grid.Column="1"
+                Text="Подключение успешно"
+                VerticalAlignment="Center"
+                FontSize="16"/>
+        </Grid>
+    </Grid>
+</Window>
