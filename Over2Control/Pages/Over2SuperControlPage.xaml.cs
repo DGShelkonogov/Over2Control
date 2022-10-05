@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -63,7 +64,7 @@ namespace Over2Control.Pages
         {
             try
             {
-                string json =  File.ReadAllText(MainWindow.PathToAppsettings);
+                string json = File.ReadAllText(MainWindow.PathToAppsettings);
                 dynamic jsonObj = JsonConvert.DeserializeObject(json);
                 jsonObj["WorkerOptions"]["Controllers"].Remove(deviceId);
                 string output = JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
@@ -83,18 +84,18 @@ namespace Over2Control.Pages
                 dynamic jsonObj = JsonConvert.DeserializeObject(json);
 
                 var Controllers = jsonObj["WorkerOptions"]["Controllers"];
-                Controllers.Add(item.SelectedController.ID, new JObject());
+                Controllers.Add(item.Ip, new JObject());
 
-                Controllers[item.SelectedController.ID].Add("Name", item.SelectedController.Title);
-                Controllers[item.SelectedController.ID].Add("id_dev", item.SelectedController.ID);
-                Controllers[item.SelectedController.ID].Add("Ip", item.Ip);
-                Controllers[item.SelectedController.ID].Add("Port", Convert.ToInt32(item.Port));
-                Controllers[item.SelectedController.ID].Add("IsActive", item.IsActive);
-                Controllers[item.SelectedController.ID].Add("timeout_DB_answer", item.Timeout);
-                Controllers[item.SelectedController.ID].Add("Host_num", item.HostNum);
-                Controllers[item.SelectedController.ID].Add("Channels", new JObject());
+                Controllers[item.Ip].Add("Name", item.SelectedController.Title);
+                Controllers[item.Ip].Add("id_dev", item.SelectedController.ID);
+                Controllers[item.Ip].Add("Ip", item.Ip);
+                Controllers[item.Ip].Add("Port", Convert.ToInt32(item.Port));
+                Controllers[item.Ip].Add("IsActive", item.IsActive);
+                Controllers[item.Ip].Add("timeout_DB_answer", item.Timeout);
+                Controllers[item.Ip].Add("Host_num", item.HostNum);
+                Controllers[item.Ip].Add("Channels", new JObject());
 
-                var ControllerChannels = Controllers[item.SelectedController.ID]["Channels"];
+                var ControllerChannels = Controllers[item.Ip]["Channels"];
                 foreach (var channel in item.SelectedController.Channels)
                     ControllerChannels[channel.Number] = channel.Debice;
 
@@ -126,6 +127,21 @@ namespace Over2Control.Pages
                 dynamic jsonObj = JsonConvert.DeserializeObject(json);
 
                 var controllers = jsonObj["WorkerOptions"]["Controllers"];
+
+                var bufferDevices = new List<Device>();
+
+                foreach (var field in controllers)
+                {
+                    var dev = field.Value;
+                    string ip = dev["Ip"];
+                    string id_dev = dev["id_dev"];
+                    bufferDevices.Add(new Device()
+                    {
+                        Ip = ip,
+                        SelectedController = new Controller() { ID = id_dev }
+                    });
+                }
+
 
                 using (var reader = command.ExecuteReader())
                 {
@@ -159,22 +175,29 @@ namespace Over2Control.Pages
 
                         Device.Controllers.Add(controller);
 
-                        var obj = controllers.GetValue(id_dev);
-
-                        if (obj != null)
+                        var bufferDevice = bufferDevices.AsQueryable()
+                            .FirstOrDefault(x => x.SelectedController.ID == id_dev);
+                        if (bufferDevice != null)
                         {
-                            var device = new Device()
-                            {
-                                Ip = obj.Ip,
-                                IsActive = obj.IsActive,
-                                Port = obj.Port,
-                                HostNum = obj.Host_num,
-                                Timeout = obj.timeout_DB_answer,
-                                SelectedController = controller
-                            };
 
-                            _items.Add(device);
+                            var obj = controllers.GetValue(bufferDevice.Ip);
+
+                            if (obj != null)
+                            {
+                                var device = new Device()
+                                {
+                                    Ip = obj.Ip,
+                                    IsActive = obj.IsActive,
+                                    Port = obj.Port,
+                                    HostNum = obj.Host_num,
+                                    Timeout = obj.timeout_DB_answer,
+                                    SelectedController = controller
+                                };
+
+                                _items.Add(device);
+                            }
                         }
+
                     }
                 }
                 connection.Close();
